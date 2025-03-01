@@ -71,8 +71,6 @@ case $choice in
             winetricks \
             winbind \
             xvfb \
-            x11-xserver-utils \
-            xorg \
             cabextract \
             p7zip-full \
             mono-complete
@@ -80,15 +78,24 @@ case $choice in
         # Wine 초기 설정
         echo -e "${YELLOW}Wine 초기 설정 중...${NC}"
         export DISPLAY=:0
+        
+        # 기존 Xvfb 프로세스 정리
+        killall Xvfb 2>/dev/null
+        rm -f /tmp/.X0-lock 2>/dev/null
+        
+        # Xvfb 시작
         Xvfb :0 -screen 0 1024x768x16 &
+        sleep 2  # Xvfb가 완전히 시작될 때까지 대기
+
+        # Wine 설정
         WINEARCH=win64 WINEPREFIX=~/.wine wineboot -u
         
         # Windows 구성요소 설치
         echo -e "${YELLOW}Windows 구성요소 설치 중...${NC}"
-        winetricks -q vcrun2019
-        winetricks -q dotnet48
-        winetricks allfonts
-        winetricks settings win10
+        DISPLAY=:0 winetricks -q vcrun2019
+        DISPLAY=:0 winetricks -q dotnet48
+        DISPLAY=:0 winetricks allfonts
+        DISPLAY=:0 winetricks settings win10
     fi
     
     # GitHub에서 코드 복사
