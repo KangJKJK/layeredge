@@ -1,1 +1,1 @@
-REF: https://github.com/MeoMunDep/LayerEdge
+REF: https://github.com/airdropinsiders/LayerEdge-Auto-Bot
