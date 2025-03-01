@@ -115,7 +115,6 @@ case $choice in
 
     # 봇 구동
     npm run start
-
     ;;
     
   2)
@@ -128,7 +127,6 @@ case $choice in
     # 봇 구동
     npm run start
     ;;
-
 
   3)
     echo -e "${GREEN}레이어엣지 봇을 업데이트합니다.${NC}"
@@ -145,12 +143,11 @@ case $choice in
     cp "$WORK/wallets.json" "$BACKUP_DIR/" 2>/dev/null
     cp "$WORK/proxy.txt" "$BACKUP_DIR/" 2>/dev/null
     
-    # 작업 디렉토리로 이동
+    # 기존 폴더 삭제 후 새로 클론
+    cd /root
+    rm -rf "$WORK"
+    git clone https://github.com/airdropinsiders/LayerEdge-Auto-Bot.git
     cd "$WORK"
-    
-    # git pull로 최신 코드 가져오기
-    echo -e "${YELLOW}최신 코드를 가져오는 중...${NC}"
-    git pull
     
     # 백업했던 파일 복원
     echo -e "${YELLOW}설정 파일 복원 중...${NC}"
