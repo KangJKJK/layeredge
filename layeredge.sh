@@ -55,15 +55,25 @@ case $choice in
     echo -e "${YELLOW}Wine 설치 중...${NC}"
     install_wine
 
-    # Wine 추가 종속성 설치
+    # Wine 설치
+    echo -e "${YELLOW}Wine 설치 중...${NC}"
     if [ -f /etc/debian_version ]; then
+        # Ubuntu/Debian용 Wine 설치
         sudo dpkg --add-architecture i386
         sudo apt update
-        sudo apt install -y wine32 wine64 libwine libwine:i386 fonts-wine
-    elif [ -f /etc/arch-release ]; then
-        sudo pacman -Sy wine-mono wine-gecko --noconfirm
-    elif [ -f /etc/fedora-release ]; then
-        sudo dnf install -y wine wine-mono wine-gecko
+        sudo apt install -y --install-recommends wine64 wine32 \
+            libwine libwine:i386 fonts-wine \
+            winetricks \
+            winbind \
+            xvfb
+
+        # Wine 초기 설정
+        echo -e "${YELLOW}Wine 초기 설정 중...${NC}"
+        WINEARCH=win64 WINEPREFIX=~/.wine wineboot -u
+        
+        # Windows 구성요소 설치
+        echo -e "${YELLOW}Windows 구성요소 설치 중...${NC}"
+        winetricks -q vcrun2019
     fi
 
     # GitHub에서 코드 복사
