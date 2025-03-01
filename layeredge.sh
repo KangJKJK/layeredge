@@ -41,6 +41,13 @@ case $choice in
     git clone https://github.com/airdropinsiders/LayerEdge-Auto-Bot.git
     cd "$WORK"
 
+    # 레퍼럴 코드 입력받기
+    read -p "레퍼럴 코드를 입력하세요: " refcode
+    
+    # main.js 파일 수정
+    echo -e "${YELLOW}main.js 파일 수정 중...${NC}"
+    sed -i "s/refCode = \"knYyWnsE\"/refCode = \"$refcode\"/" main.js
+
     # Node.js 20 LTS 버전 설치 및 사용
     echo -e "${YELLOW}Node.js 20 LTS 버전을 설치하고 설정 중...${NC}"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
@@ -123,10 +130,10 @@ case $choice in
     
     # nvm을 로드합니다
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
+
     nvm use 20
 
     cd "$WORK"
-    
     # 봇 구동
     npm run start
     ;;
@@ -137,7 +144,6 @@ case $choice in
 
     # nvm을 로드합니다
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
-    nvm use 20
     
     # 백업 디렉토리 생성
     BACKUP_DIR="/root/layeredgeback"
@@ -154,6 +160,13 @@ case $choice in
     # git pull로 최신 코드 가져오기
     echo -e "${YELLOW}최신 코드를 가져오는 중...${NC}"
     git pull
+
+    # 레퍼럴 코드 입력받기
+    read -p "레퍼럴 코드를 입력하세요: " refcode
+    
+    # main.js 파일 수정
+    echo -e "${YELLOW}main.js 파일 수정 중...${NC}"
+    sed -i "s/refCode = \"knYyWnsE\"/refCode = \"$refcode\"/" main.js
     
     # 백업했던 파일 복원
     echo -e "${YELLOW}설정 파일 복원 중...${NC}"
@@ -173,3 +186,4 @@ case $choice in
     echo -e "${RED}잘못된 선택입니다. 다시 시도하세요.${NC}"
     ;;
 esac
+
