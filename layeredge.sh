@@ -48,7 +48,6 @@ case $choice in
     nvm install 20
     nvm use 20
     npm install
-    npm run setup
 
     echo -e "${GREEN}메인계정으로 사용할 월렛을 연결해주세요(REF:hDTQSQOS): https://dashboard.layeredge.io/ ${NC}"
     echo -e "${GREEN}당신의 레퍼럴코드를 기록해두세요. 봇 이용시 새로운 계정을 자동으로 생성하여 레퍼럴을 자동으로 입력할 수 있습니다. ${NC}"
@@ -115,18 +114,55 @@ case $choice in
     } > "$WORK/wallets.json"
 
     # 봇 구동
-    npm install
     npm run start
 
     ;;
     
   2)
-    echo -e "${GREEN}레이어엣지 봇을 재실행합니다.${NC}"
+    echo -e "${GREEN}레이어엣지봇을 재실행합니다.${NC}"
     
     # nvm을 로드합니다
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
+
     cd "$WORK"
     # 봇 구동
+    npm run start
+    ;;
+
+
+  3)
+    echo -e "${GREEN}레이어엣지 봇을 업데이트합니다.${NC}"
+
+    # nvm을 로드합니다
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
+    
+    # 백업 디렉토리 생성
+    BACKUP_DIR="/root/layeredgeback"
+    echo -e "${YELLOW}설정 파일 백업 중...${NC}"
+    mkdir -p "$BACKUP_DIR"
+    
+    # 중요 파일 백업
+    cp "$WORK/wallets.json" "$BACKUP_DIR/" 2>/dev/null
+    cp "$WORK/proxy.txt" "$BACKUP_DIR/" 2>/dev/null
+    
+    # 작업 디렉토리로 이동
+    cd "$WORK"
+    
+    # git pull로 최신 코드 가져오기
+    echo -e "${YELLOW}최신 코드를 가져오는 중...${NC}"
+    git pull
+    
+    # 백업했던 파일 복원
+    echo -e "${YELLOW}설정 파일 복원 중...${NC}"
+    cp "$BACKUP_DIR/wallets.json" "$WORK/" 2>/dev/null
+    cp "$BACKUP_DIR/proxy.txt" "$WORK/" 2>/dev/null
+    
+    # 의존성 패키지 업데이트
+    echo -e "${YELLOW}의존성 패키지를 업데이트하는 중...${NC}"
+    npm install
+    
+    echo -e "${GREEN}업데이트가 완료되었습니다.${NC}"
+
     npm run start
     ;;
 
