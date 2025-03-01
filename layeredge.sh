@@ -143,7 +143,7 @@ case $choice in
     cp "$BACKUP_DIR/configs.json" "$WORK/" 2>/dev/null
     
     echo -e "${GREEN}업데이트가 완료되었습니다.${NC}"
-    wine LayerEdge.exe
+    wine meomundep.exe
     ;;
 
   *)
