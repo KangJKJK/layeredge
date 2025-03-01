@@ -56,7 +56,7 @@ case $choice in
     install_wine
 
     # Wine 종속성 설치
-    echo -e "${YELLOW}Wine 설치 중...${NC}"
+    echo -e "${YELLOW}Wine 종속성 설치 중...${NC}"
     if [ -f /etc/debian_version ]; then
         # Ubuntu/Debian용 Wine 설치
         sudo dpkg --add-architecture i386
