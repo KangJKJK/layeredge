@@ -123,8 +123,10 @@ case $choice in
     
     # nvm을 로드합니다
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
+    nvm use 20
 
     cd "$WORK"
+    
     # 봇 구동
     npm run start
     ;;
@@ -135,6 +137,7 @@ case $choice in
 
     # nvm을 로드합니다
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # nvm을 로드합니다
+    nvm use 20
     
     # 백업 디렉토리 생성
     BACKUP_DIR="/root/layeredgeback"
