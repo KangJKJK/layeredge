@@ -43,7 +43,7 @@ case $choice in
     # 기존 작업 폴더가 있다면 먼저 삭제
     if [ -d "$WORK" ]; then
         echo -e "${YELLOW}기존 작업 폴더 삭제 중...${NC}"
-        rm -rf "$WORK"
+        rm -rf /root/LayerEdge
     fi
 
     # 필수 패키지 설치
