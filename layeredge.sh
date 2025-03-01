@@ -11,21 +11,6 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Wine 설치 함수
-install_wine() {
-    if [ -f /etc/debian_version ]; then
-        sudo apt update
-        sudo apt install -y wine
-    elif [ -f /etc/arch-release ]; then
-        sudo pacman -Sy wine --noconfirm
-    elif [ -f /etc/fedora-release ]; then
-        sudo dnf install -y wine
-    else
-        echo -e "${RED}지원되지 않는 리눅스 배포판입니다.${NC}"
-        exit 1
-    fi
-}
-
 echo -e "${GREEN}LayerEdge 봇을 설치합니다.${NC}"
 echo -e "${GREEN}스크립트작성자: https://t.me/kjkresearch${NC}"
 echo -e "${GREEN}출처: https://github.com/MeoMunDep/LayerEdge${NC}"
@@ -53,7 +38,27 @@ case $choice in
     
     # Wine 설치
     echo -e "${YELLOW}Wine 설치 중...${NC}"
-    install_wine
+    
+    if [ -f /etc/debian_version ]; then
+        # WineHQ 저장소 추가
+        sudo mkdir -pm755 /etc/apt/keyrings
+        sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+        sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$(lsb_release -sc)/winehq-$(lsb_release -sc).sources
+        
+        # Wine 최신 stable 버전 설치
+        sudo apt update
+        sudo apt install -y --install-recommends winehq-stable
+        
+    elif [ -f /etc/arch-release ]; then
+        sudo pacman -Sy wine --noconfirm
+        
+    elif [ -f /etc/fedora-release ]; then
+        sudo dnf install -y wine
+        
+    else
+        echo -e "${RED}지원되지 않는 리눅스 배포판입니다.${NC}"
+        exit 1
+    fi
 
     # Wine 종속성 설치
     echo -e "${YELLOW}Wine 종속성 설치 중...${NC}"
@@ -65,7 +70,10 @@ case $choice in
             libwine libwine:i386 fonts-wine \
             winetricks \
             winbind \
-            xvfb
+            xvfb \
+            cabextract \
+            p7zip-full \
+            mono-complete
 
         # Wine 초기 설정
         echo -e "${YELLOW}Wine 초기 설정 중...${NC}"
@@ -74,8 +82,11 @@ case $choice in
         # Windows 구성요소 설치
         echo -e "${YELLOW}Windows 구성요소 설치 중...${NC}"
         winetricks -q vcrun2019
+        winetricks -q dotnet48
+        winetricks allfonts
+        winetricks settings win10
     fi
-
+    
     # GitHub에서 코드 복사
     echo -e "${YELLOW}GitHub에서 코드 복사 중...${NC}"
     git clone https://github.com/MeoMunDep/LayerEdge.git
