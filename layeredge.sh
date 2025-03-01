@@ -55,7 +55,7 @@ case $choice in
     echo -e "${YELLOW}Wine 설치 중...${NC}"
     install_wine
 
-    # Wine 설치
+    # Wine 종속성 설치
     echo -e "${YELLOW}Wine 설치 중...${NC}"
     if [ -f /etc/debian_version ]; then
         # Ubuntu/Debian용 Wine 설치
