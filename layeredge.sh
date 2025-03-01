@@ -71,12 +71,16 @@ case $choice in
             winetricks \
             winbind \
             xvfb \
+            x11-xserver-utils \
+            xorg \
             cabextract \
             p7zip-full \
             mono-complete
 
         # Wine 초기 설정
         echo -e "${YELLOW}Wine 초기 설정 중...${NC}"
+        export DISPLAY=:0
+        Xvfb :0 -screen 0 1024x768x16 &
         WINEARCH=win64 WINEPREFIX=~/.wine wineboot -u
         
         # Windows 구성요소 설치
@@ -138,9 +142,11 @@ case $choice in
     } > "$WORK/configs.json"
 
     echo -e "${GREEN}추천 코드가 성공적으로 저장되었습니다.${NC}"
-
+    
     # exe 파일 실행
     echo -e "${YELLOW}LayerEdge 실행 중...${NC}"
+    export DISPLAY=:0
+    Xvfb :0 -screen 0 1024x768x16 &
     wine meomundep.exe
     ;;
     
