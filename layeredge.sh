@@ -55,6 +55,17 @@ case $choice in
     echo -e "${YELLOW}Wine 설치 중...${NC}"
     install_wine
 
+    # Wine 추가 종속성 설치
+    if [ -f /etc/debian_version ]; then
+        sudo dpkg --add-architecture i386
+        sudo apt update
+        sudo apt install -y wine32 wine64 libwine libwine:i386 fonts-wine
+    elif [ -f /etc/arch-release ]; then
+        sudo pacman -Sy wine-mono wine-gecko --noconfirm
+    elif [ -f /etc/fedora-release ]; then
+        sudo dnf install -y wine wine-mono wine-gecko
+    fi
+
     # GitHub에서 코드 복사
     echo -e "${YELLOW}GitHub에서 코드 복사 중...${NC}"
     git clone https://github.com/MeoMunDep/LayerEdge.git
